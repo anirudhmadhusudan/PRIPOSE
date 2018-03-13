@@ -30,7 +30,7 @@ def collect_sample():
 	for folder in os.listdir(rootdir):
 		filename = rootdir+"/"+folder+"/data_to_collect.json"
 		with open(filename, 'r') as fp:
-			with open(rootdir+"/"+folder+'/data.csv', 'w') as csvfile:
+			with open(rootdir+"/"+folder+'/data.csv', 'a') as csvfile:
 				spamwriter = csv.writer(csvfile, delimiter=',')
 				data = json.load(fp)
 				sample_points = data["sample_points"]
@@ -43,6 +43,6 @@ def collect_sample():
 						spamwriter.writerow(entry)
 
 while(1):
-	collect_sample
+	collect_sample()
 	print("Collecting a sample")
 	time.sleep(900) #sleep for 15 minutes

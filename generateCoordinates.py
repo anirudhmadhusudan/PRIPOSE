@@ -19,6 +19,19 @@ def getLongitudeWidthAtLatitue(latitude, meterWidth):
     circleMeterLengthAtLatitude = 2 * math.pi * EARTH_EQUATORIAL_RADIUS_METER * math.cos(latitude / 180 * math.pi)
     return meterWidth/circleMeterLengthAtLatitude * 360
 
+def degreesToRadians(degrees):
+	return degrees * math.pi / 180
+
+def distanceInMetersBetweenEarthCoordinates(lat1, lon1, lat2, lon2):
+	earthRadiusKm = 6371
+	dLat = degreesToRadians(lat2-lat1)
+	dLon = degreesToRadians(lon2-lon1)
+	lat1 = degreesToRadians(lat1)
+	lat2 = degreesToRadians(lat2)
+	a = math.sin(dLat/2) * math.sin(dLat/2) + math.sin(dLon/2) * math.sin(dLon/2) * math.cos(lat1) * math.cos(lat2) 
+	c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a)) 
+	return earthRadiusKm * c * 1000
+
 
 # Generates a uniform distribution of count coordinates
 # Boundary defined by lat,lon of center corner and width in meters
@@ -43,12 +56,19 @@ def generateCoordsWithinSquare(centerLat,centerLon,meterWidth,count,gmap,map_fil
 
 	latitudes = []
 	longitudes = []
+	distances_to_center = []
+
 	# Generate count randomly distributed coordinates
 	for i in range(count):
-		latitudes.append(random.uniform(upperLeftLat, lowerLeftLat))
-		longitudes.append(random.uniform(upperLeftLon, upperRightLon))
+		lat = random.uniform(upperLeftLat, lowerLeftLat)
+		lon = random.uniform(upperLeftLon, upperRightLon)
+		dist = distanceInMetersBetweenEarthCoordinates(centerLat,centerLon,lat,lon)
+		latitudes.append(lat)
+		longitudes.append(lon)
+		distances_to_center.append(dist)
 
-	sample_points = [latitudes,longitudes]
+
+	sample_points = zip(latitudes,longitudes)
 	boundaries = [[upperLeftLat, upperRightLat, lowerRightLat, lowerLeftLat, upperLeftLat], [upperLeftLon, upperRightLon, lowerRightLon, lowerLeftLon, upperLeftLon]]
 	# Plot center coordinate
 	gmap.scatter([centerLat],[centerLon],color="#ff0000")
@@ -59,5 +79,5 @@ def generateCoordsWithinSquare(centerLat,centerLon,meterWidth,count,gmap,map_fil
 	# Plot bounding rectangle
 	gmap.plot(boundaries[0], boundaries[1])
 	gmap.draw(map_file)
-	return {"boundary": boundaries, "sample_points": sample_points}
+	return {"boundary": boundaries, "sample_points": sample_points, "distances_to_center": distances_to_center}
 	

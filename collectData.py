@@ -3,6 +3,7 @@ import json
 import urllib2
 import os
 import time
+import csv
 
 
 key = "4BGs4umzWE9Bg7fluGQR7gToO6Qlageu"
@@ -18,23 +19,29 @@ def getSpeedAtLoc(lat,lon):
 		currentSpeed = data["currentSpeed"]
 		confidence = data["confidence"]
 		ratio = round(currentSpeed/float(freeFlowSpeed),2)
-		return str(lat)+", "+str(lon)+", "+str(freeFlowSpeed)+", "+str(currentSpeed)+", "+str(ratio)+", "+str(confidence)+", "+str(time.time())
+		return [str(lat),str(lon),str(freeFlowSpeed),str(currentSpeed),str(ratio),str(confidence),str(time.time())]
 	except urllib2.HTTPError as err:
-		print("Not found")
+		return "Not found"
 
-# Main
-rootdir = "Venues/"
-for folder in os.listdir(rootdir):
-	filename = rootdir+"/"+folder+"/data_to_collect.json"
-	with open(filename, 'r') as fp:
-		data = json.load(fp)
-		sample_points = data["sample_points"]
-		lats = sample_points[0]
-		lons = sample_points[1]
-		for i in range(len(lats)):
-			latitude = str(lats[i])
-			longitude = str(lons[i])
-			print(getSpeedAtLoc(latitude,longitude))
-			break
-	break
+# One sample from every coordinate we have
 
+def collect_sample:
+	rootdir = "Venues/"
+	for folder in os.listdir(rootdir):
+		filename = rootdir+"/"+folder+"/data_to_collect.json"
+		with open(filename, 'r') as fp:
+			with open(rootdir+"/"+folder+'/data.csv', 'w') as csvfile:
+				spamwriter = csv.writer(csvfile, delimiter=',')
+				data = json.load(fp)
+				sample_points = data["sample_points"]
+				print filename
+				for sample_point in sample_points:
+					latitude = str(sample_point[0])
+					longitude = str(sample_point[1])
+					entry = getSpeedAtLoc(latitude,longitude)
+					if entry != "Not found":
+						spamwriter.writerow(entry)
+
+while(1):
+	collect_sample
+	time.sleep(900) #sleep for 15 minutes

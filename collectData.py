@@ -25,7 +25,7 @@ def getSpeedAtLoc(lat,lon):
 
 # One sample from every coordinate we have
 
-def collect_sample:
+def collect_sample():
 	rootdir = "Venues/"
 	for folder in os.listdir(rootdir):
 		filename = rootdir+"/"+folder+"/data_to_collect.json"
@@ -44,4 +44,5 @@ def collect_sample:
 
 while(1):
 	collect_sample
+	print("Collecting a sample")
 	time.sleep(900) #sleep for 15 minutes

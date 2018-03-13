@@ -1,9 +1,6 @@
 Live Data Collection Setup
 
-Before running anything, look in the Venues folder. The idea for this is that each folder contains a venue of 
-a popular event taken from eventful. Here, all of the data taken around that venue will be stored here. Right now, 
-there is a map that has the boundary around the venue (5 km square) and a bunch of randomly generated sample points we will be 
-feeding into the Tom tom api. 
+Before running anything, look in the Venues folder. The idea for this is that each folder contains a venue of a popular event taken from eventful. Here, all of the data taken around that venue will be stored here. Right now, there is a map that has the boundary around the venue (5 km square) and a bunch of randomly generated sample points we will be feeding into the Tom tom api. 
 
 If you want to run everything, here are the steps: 
 

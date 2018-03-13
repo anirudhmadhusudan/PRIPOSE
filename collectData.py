@@ -34,6 +34,7 @@ def collect_sample():
 				spamwriter = csv.writer(csvfile, delimiter=',')
 				data = json.load(fp)
 				sample_points = data["sample_points"]
+				print sample_points
 				print filename
 				for sample_point in sample_points:
 					latitude = str(sample_point[0])

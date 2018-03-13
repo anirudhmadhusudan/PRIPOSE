@@ -26,4 +26,4 @@ for event in events:
 	data["center_point"] = [latitude,longitude]
 	filename = directory + "/data_to_collect.json"
 	with open(filename, 'w') as fp:
-		json.dump(data, fp)
+		json.dump(data, fp, indent = 4, sort_keys=True)

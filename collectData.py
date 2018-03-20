@@ -19,6 +19,9 @@ def getSpeedAtLoc(lat,lon):
 		currentSpeed = data["currentSpeed"]
 		confidence = data["confidence"]
 		ratio = round(currentSpeed/float(freeFlowSpeed),2)
+
+		#TODO: put average of returned segments lat and lon here
+
 		return [str(lat),str(lon),str(freeFlowSpeed),str(currentSpeed),str(ratio),str(confidence),str(time.time())]
 	except urllib2.HTTPError as err:
 		return "Not found"
@@ -43,7 +46,29 @@ def collect_sample():
 					if entry != "Not found":
 						spamwriter.writerow(entry)
 
-while(1):
-	collect_sample()
-	print("Collecting a sample")
-	time.sleep(900) #sleep for 15 minutes
+def collect_sample_with_venue(venue):
+	rootdir = "Venues/"
+	filename = rootdir+venue+"/data_to_collect.json"
+	with open(filename, 'r') as fp:
+		with open(rootdir+"/"+venue+'/data.csv', 'a') as csvfile:
+			spamwriter = csv.writer(csvfile, delimiter=',')
+			data = json.load(fp)
+			sample_points = data["sample_points"]
+			print filename
+			for sample_point in sample_points:
+				latitude = str(sample_point[0])
+				longitude = str(sample_point[1])
+				entry = getSpeedAtLoc(latitude,longitude)
+				if entry != "Not found":
+					spamwriter.writerow(entry)
+
+# while(1):
+# 	collect_sample()
+# 	print("Collecting a sample")
+# 	time.sleep(1800) #sleep for 30 minutes
+
+# # Or just call collect_sample once
+# collect_sample()
+
+# Or collect sample from just a venue
+collect_sample_with_venue("The Kent Stage")

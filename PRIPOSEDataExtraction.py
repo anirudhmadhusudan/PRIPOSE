@@ -158,5 +158,5 @@ while counter <= 11:
 	if counter == 11:
 		break
 	time.sleep(1800)
-counter += 1
+	counter += 1
 

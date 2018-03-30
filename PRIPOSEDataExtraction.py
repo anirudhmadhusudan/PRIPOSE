@@ -137,6 +137,8 @@ while counter <= 11:
 	i = 0
 	dfadd = pd.DataFrame([['ignore this row',"2",1.1,1.1,21,21,1,1,1,0]],columns=columns1)
 
+	#CHANGE THE DATE BELOW TO March23/March24 etc based on today's date
+
 	for i in range(0,len(EventIDName)):
 	    loc_type = "C"
 	    lat = df['venue_lat'][i]
@@ -156,5 +158,5 @@ while counter <= 11:
 	if counter == 11:
 		break
 	time.sleep(1800)
-	counter += 1
+counter += 1
 
